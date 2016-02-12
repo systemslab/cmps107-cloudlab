@@ -1,0 +1,166 @@
+Path: news.gmane.org!not-for-mail
+From: Chris Mason <clmason@fusionio.com>
+Newsgroups: gmane.linux.file-systems
+Subject: [PATCH RFC 0/2] rcu skiplists v2
+Date: Sun, 16 Jun 2013 10:56:12 -0400
+Lines: 88
+Approved: news@gmane.org
+Message-ID: <20130616145612.4914.3009@localhost.localdomain>
+NNTP-Posting-Host: plane.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Trace: ger.gmane.org 1371394588 28639 80.91.229.3 (16 Jun 2013 14:56:28 GMT)
+X-Complaints-To: usenet@ger.gmane.org
+NNTP-Posting-Date: Sun, 16 Jun 2013 14:56:28 +0000 (UTC)
+Cc: Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+	David Woodhouse <David.Woodhouse@intel.com>,
+	"dchinner@redhat.com" <dchinner@redhat.com>,
+	"bo.li.liu@oracle.com" <bo.li.liu@oracle.com>,
+	"rp@svcs.cs.pdx.edu" <rp@svcs.cs.pdx.edu>,
+	"Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+	Lai Jiangshan <laijs@cn.fujitsu.com>,
+	Stephen Hemminger <shemminger@vyatta.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Original-X-From: linux-fsdevel-owner@vger.kernel.org Sun Jun 16 16:56:28 2013
+Return-path: <linux-fsdevel-owner@vger.kernel.org>
+Envelope-to: lnx-linux-fsdevel@plane.gmane.org
+Original-Received: from vger.kernel.org ([209.132.180.67])
+	by plane.gmane.org with esmtp (Exim 4.69)
+	(envelope-from <linux-fsdevel-owner@vger.kernel.org>)
+	id 1UoENY-00045F-4y
+	for lnx-linux-fsdevel@plane.gmane.org; Sun, 16 Jun 2013 16:56:28 +0200
+Original-Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+	id S1755222Ab3FPO4Q (ORCPT <rfc822;lnx-linux-fsdevel@m.gmane.org>);
+	Sun, 16 Jun 2013 10:56:16 -0400
+Original-Received: from dkim1.fusionio.com ([66.114.96.53]:50334 "EHLO
+	dkim1.fusionio.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+	with ESMTP id S1755197Ab3FPO4Q convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-fsdevel@vger.kernel.org>);
+	Sun, 16 Jun 2013 10:56:16 -0400
+Original-Received: from mx2.fusionio.com (unknown [10.101.1.160])
+	by dkim1.fusionio.com (Postfix) with ESMTP id 1500F7C0696
+	for <linux-fsdevel@vger.kernel.org>; Sun, 16 Jun 2013 08:56:15 -0600 (MDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fusionio.com;
+	s=default; t=1371394575;
+	bh=m7J2xN+htbdxOD2tpxU/N9HCeQr/hay5a+Bh7KIwXTw=;
+	h=From:CC:To:Subject:Date;
+	b=Kf31fXgOdpzjf2P6uCpsrg7nT66+z9+YrPMpfqeay/AEPJMXMWKimvxqptR7O0/zQ
+	 7hbVeeEpl+iE5H2KZCelvzNbu36SRxkYC29VbLTgpPh9YTUyrIheGs2odHt1Ook+Su
+	 9WO42/YC/A5aSAqxtCxn9qL62yAEn8fZlq1eY2ws=
+X-ASG-Debug-ID: 1371394574-0421b5021f24d30001-kl68QG
+Original-Received: from CAS2.int.fusionio.com (cas2.int.fusionio.com [10.101.1.41]) by mx2.fusionio.com with ESMTP id xfNtsSeQjjNgmJMq (version=TLSv1 cipher=AES128-SHA bits=128 verify=NO); Sun, 16 Jun 2013 08:56:14 -0600 (MDT)
+X-Barracuda-Envelope-From: clmason@fusionio.com
+Original-Received: from localhost (10.101.1.160) by mail.fusionio.com (10.101.1.41)
+ with Microsoft SMTP Server (TLS) id 14.3.123.3; Sun, 16 Jun 2013 08:56:13
+ -0600
+User-Agent: alot/0.3.4
+X-ASG-Orig-Subj: [PATCH RFC 0/2] rcu skiplists v2
+X-Originating-IP: [10.101.1.160]
+X-Barracuda-Connect: cas2.int.fusionio.com[10.101.1.41]
+X-Barracuda-Start-Time: 1371394574
+X-Barracuda-Encrypted: AES128-SHA
+X-Barracuda-URL: http://10.101.1.181:8000/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at fusionio.com
+X-Barracuda-Spam-Score: 0.00
+X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.2.134082
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+Original-Sender: linux-fsdevel-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-fsdevel.vger.kernel.org>
+X-Mailing-List: linux-fsdevel@vger.kernel.org
+Xref: news.gmane.org gmane.linux.file-systems:75539
+Archived-At: <http://permalink.gmane.org/gmane.linux.file-systems/75539>
+
+Hi everyone,
+
+This is another iteration of my skiplists patch, with some bugs fixed
+and a few missing parts of the API done.  The biggest change is in the
+insertion code, where I now link from the bottom up once I find the
+proper insertion point.  This makes it possible to write custom
+insertion routines that allow duplicate keys.
+
+It also means insertion doesn't have to lock and track all the nodes
+from the top as it searches.  In the likely event that we're able to
+insert into a free spot in an existing leaf, it only needs to take one
+lock.
+
+The IOMMU part of the patch is updated slightly, but still not using all
+the new bits in the API.  This is mostly because the IOMMU part is going
+to change later on and I'm really only using it for testing now.
+
+For benchmarking, the IOMMU numbers are slightly higher than last time,
+but not more than 5% or so.  This is because the bottleneck is still
+skiplist_insert_hole(), which I haven't really changed in this round.
+
+Most of my benchmarking now is with the skiplist_test module, which has
+expanded to a few new cases.  For random operations, my performance is
+slightly slower than rbtree when single threaded.
+
+Random lookups on 10 million items: (inserts are similar)
+
+rbtree       random lookup time 4 s 327 ms
+skiplist-rcu random lookup time 5 s 175 ms 
+
+The new API makes it easier to do sequential operations.  Here is a walk
+through the 10 million item list:
+
+skiplist-rcu check time 0 s 79 ms
+rbtree check time      0 s 295 ms
+
+And sequential insert:
+
+kiplist-rcu fill time 1 s 599 ms
+rbtree fill time      1 s 875 ms
+
+The benchmark does random lookup/deletion/insertion rounds.  Most of the
+operations done are either deletion or insertion, so I'm not skewing the
+results with the easy rcu lookup operation.
+
+Single threaded rbtree does consistently win across all sizes of lists:
+
+skiplist-rcu thread 0 time 0 s 287 ms
+rbtree thread       0 time 0 s 215 ms
+
+But once we go up to two threads, skiplists win:
+
+skiplist-rcu thread 1 time 0 s 299 ms
+rbtree thread 1 time       0 s 499 ms
+
+At 8 threads, the skiplists don't get linear scaling, but it's really
+pretty good.  Since I'm doing random operations on a wide key space,
+the locking skiplist variant is also fast:
+
+skiplist-rcu     thread 7 time 0 s 379 ms
+skiplist-locking thread 7 time 0 s 425 ms
+rbtree           thread 7 time 3 s 711 ms
+
+My test machine is 8 cores, so at 16 threads we're into HT:
+
+skiplist-rcu thread     15 time 0 s 583 ms
+skiplist-locking thread 15 time 0 s 559 ms
+rbtree thread           15 time 7 s 423 ms
+
+It's not all sunshine though.  If I shrink the keyspace down to 1000
+keys or less, there is more contention on the node locks and we're tied
+(or slightly worse) than rbtree.  In that kind of workload it makes
+sense to add a big fat lock around the skiplist, or just stick with
+rbtrees.
+
+The skiplists do have locking and rcu variants of lookup operations.
+The locking ones are built on top of the rcu ones, and you can use them
+both at the same time.
+
+Patches follow.
+
+-chris
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-fsdevel" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
