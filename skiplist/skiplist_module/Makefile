@@ -4,8 +4,6 @@ KBUILD_CFLAGS += -g
 MODNAME = skiplist_test
 
 obj-m	:= $(MODNAME).o
-ccflags-y := -Iinclude
-skiplist_test-y := skiplist.o
 
 all: kernel_modules
 

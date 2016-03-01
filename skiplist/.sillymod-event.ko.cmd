@@ -1,1 +1,0 @@
-cmd_/users/ashewmak/silly/sillymod-event.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /users/ashewmak/silly/sillymod-event.ko /users/ashewmak/silly/sillymod-event.o /users/ashewmak/silly/sillymod-event.mod.o
