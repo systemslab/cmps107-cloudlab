@@ -1,0 +1,16 @@
+diff --git a/arch/arm/kernel/signal.c b/arch/arm/kernel/signal.c
+index 7b8f214..ff5052c 100644
+--- a/arch/arm/kernel/signal.c
++++ b/arch/arm/kernel/signal.c
+@@ -594,6 +594,7 @@ do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
+ 			} else {
+ 				clear_thread_flag(TIF_NOTIFY_RESUME);
+ 				tracehook_notify_resume(regs);
++				getcpu_cache_handle_notify_resume(current);
+ 			}
+ 		}
+ 		local_irq_disable();
+-- 
+2.1.4
+
+  

@@ -1,0 +1,44 @@
+diff --git a/arch/arm/include/asm/unistd.h b/arch/arm/include/asm/unistd.h
+index 7b84657..194b699 100644
+--- a/arch/arm/include/asm/unistd.h
++++ b/arch/arm/include/asm/unistd.h
+@@ -19,7 +19,7 @@
+  * This may need to be greater than __NR_last_syscall+1 in order to
+  * account for the padding in the syscall table
+  */
+-#define __NR_syscalls  (392)
++#define __NR_syscalls  (396)
+ 
+ #define __ARCH_WANT_STAT64
+ #define __ARCH_WANT_SYS_GETHOSTNAME
+diff --git a/arch/arm/include/uapi/asm/unistd.h b/arch/arm/include/uapi/asm/unistd.h
+index 5dd2528..1ad1351 100644
+--- a/arch/arm/include/uapi/asm/unistd.h
++++ b/arch/arm/include/uapi/asm/unistd.h
+@@ -418,6 +418,7 @@
+ #define __NR_membarrier			(__NR_SYSCALL_BASE+389)
+ #define __NR_mlock2			(__NR_SYSCALL_BASE+390)
+ #define __NR_copy_file_range		(__NR_SYSCALL_BASE+391)
++#define __NR_getcpu_cache		(__NR_SYSCALL_BASE+392)
+ 
+ /*
+  * The following SWIs are ARM private.
+diff --git a/arch/arm/kernel/calls.S b/arch/arm/kernel/calls.S
+index dfc7cd6..7e794e9 100644
+--- a/arch/arm/kernel/calls.S
++++ b/arch/arm/kernel/calls.S
+@@ -399,8 +399,9 @@
+ 		CALL(sys_execveat)
+ 		CALL(sys_userfaultfd)
+ 		CALL(sys_membarrier)
+-		CALL(sys_mlock2)
++/* 390 */	CALL(sys_mlock2)
+ 		CALL(sys_copy_file_range)
++		CALL(sys_getcpu_cache)
+ #ifndef syscalls_counted
+ .equ syscalls_padding, ((NR_syscalls + 3) & ~3) - NR_syscalls
+ #define syscalls_counted
+-- 
+2.1.4
+
+  
