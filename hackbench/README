@@ -1,0 +1,6 @@
+This copy of hackbench is from http://people.redhat.com/mingo/cfs-scheduler/tools/hackbench.c
+
+But read the messaging benchmark described in the perf-bench man page.
+It's based on hackbench.
+
+http://linux.die.net/man/1/perf-bench
