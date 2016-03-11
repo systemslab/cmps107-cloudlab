@@ -18,11 +18,11 @@ TRACE_EVENT(me_silly,
 	),
 
 	TP_fast_assign(
-		__entry->time = jiffies;
+		__entry->time = time;
 		__entry->count = count;
 	),
 
-	TP_printk("time=%lu count=%lu", __entry->time, __entry->count)
+	TP_printk("%lu, %lu", __entry->count, __entry->time)
 );
 
 #endif /* _SILLY_TRACE_H */

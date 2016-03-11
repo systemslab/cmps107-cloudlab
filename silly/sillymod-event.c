@@ -6,13 +6,15 @@
 
 static void silly_thread_func(void)
 {
-	static unsigned long count;
+	static unsigned long count, before;
 
 	set_current_state(TASK_INTERRUPTIBLE);
 	schedule_timeout(HZ);
-	printk("hello! %lu\n", count);
-	trace_me_silly(jiffies, count);
+
+	before = jiffies;
 	count++;
+	printk("hello! %lu\n", count);
+	trace_me_silly(jiffies - before, count);
 }
 
 static int silly_thread(void *arg)

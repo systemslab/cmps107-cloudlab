@@ -4,3 +4,5 @@ But read the messaging benchmark described in the perf-bench man page.
 It's based on hackbench.
 
 http://linux.die.net/man/1/perf-bench
+
+perf bench sched messaging -l 10000
