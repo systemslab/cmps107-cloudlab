@@ -56,8 +56,8 @@ png(file="silly-cdf.png", height=800, width=800, pointsize=12)
 xlabel <- expression(paste("Log of Latency (jiffies)"))
 p <- ggplot(d, aes(Time, colour=type))
 p + stat_ecdf(size=2) +
-    ylab("Empirical CDF") +
-    scale_x_log10(xlabel, limits=c(xmin, x999th))
+    ylab("Empirical CDF")
+    #scale_x_log10(xlabel, limits=c(xmin, x999th))
 
 dev.off()
 
@@ -67,7 +67,7 @@ xlabel <- expression(paste("Log of Op Latency (jiffies)"))
 p <- ggplot(d, aes(Time, fill=factor(type)))
 p + stat_density(size=2) +
     scale_fill_discrete(name = "Operation Type") +
-    ylab("Empirical Density") +
-    scale_x_log10(xlabel, limits=c(xmin, x999th))
+    ylab("Empirical Density")
+    #scale_x_log10(xlabel, limits=c(xmin, x999th))
 
 dev.off()
