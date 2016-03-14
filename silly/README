@@ -54,6 +54,20 @@ apt-get install r-base r-cran-ggplot2 imagemagick
 
 display *png
 
-After modifying the code and tracing again, you can plot both on the same graph.
+After modifying the code, removing the module, and tracing again, you can plot
+both on the same graph.
 
 ./silly-plots.R silly-before.dat silly-after.dat
+
+
+How to interpret CDFs and PDFs
+
+With latencies, smaller is better, and less variation is better. So, a better
+CDF should be more to the left and more vertical. Likewise, a better PDF will
+be more to the left, have a higher peak, and be less spread out.
+
+If you are having difficulty visually comparing CDFs and PDFs, try switching
+the scale. If the difference between the min and max is large, then try a
+logarithmic scale. Otherwise, the regular scale is probably better. You can
+also try zooming in on a region of the graph that is particularly interesting
+by changing the minimum and maximum values on that axis.
