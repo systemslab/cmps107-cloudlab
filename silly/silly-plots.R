@@ -39,9 +39,9 @@ if (n >= 2) {
   d2$op = "silly"
   xmin <- min(xmin, d2$Time)
   xmax <- max(xmax, d2$Time)
-  x50th <- round(quantile(d1$Time, c(0.50)), digits=3)
-  x90th <- round(quantile(d1$Time, c(0.90)), digits=3)
-  x99th <- round(quantile(d1$Time, c(0.99)), digits=3)
+  x50th <- round(quantile(d2$Time, c(0.50)), digits=3)
+  x90th <- round(quantile(d2$Time, c(0.90)), digits=3)
+  x99th <- round(quantile(d2$Time, c(0.99)), digits=3)
   x999th <- round(max(x999th, quantile(d2$Time, c(0.999)), na.rm=TRUE), digits=3)
   d <- rbind(d1, d2)
   c2 <- d2
